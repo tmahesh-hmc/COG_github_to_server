@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZB1 Style Studio ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #f7a8c4;
+    --pink-dark: #e87aaa;
+    --pink-light: #fde8f2;
+    --lavender: #c5b3f0;
+    --lav-dark: #9b82e0;
+    --lav-light: #ede8fb;
+    --mint: #a8e6d0;
+    --mint-dark: #5ec4a0;
+    --yellow: #ffe08a;
+    --yellow-dark: #e6c040;
+    --sky: #a3d8f5;
+    --sky-dark: #4bb5e8;
+    --peach: #ffcba8;
+    --peach-dark: #f09a6a;
+    --bg: #fff5fa;
+    --text: #3a2a4a;
+    --text-soft: #7a5a8a;
+    --card-bg: #ffffff;
+    --border: #f0d0e8;
+    --shadow: rgba(200,140,180,0.2);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    background-image: repeating-linear-gradient(0deg, transparent, transparent 39px, rgba(247,168,196,0.08) 39px, rgba(247,168,196,0.08) 40px),
+                      repeating-linear-gradient(90deg, transparent, transparent 39px, rgba(197,179,240,0.08) 39px, rgba(197,179,240,0.08) 40px);
+  }
+
+  header {
+    text-align: center;
+    padding: 1.5rem 1rem 1rem;
+    background: linear-gradient(135deg, #fce8f5 0%, #ede8fb 50%, #e8f5fb 100%);
+    border-bottom: 2px dashed var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦';
+    position: absolute; top: 6px; left: 0; right: 0;
+    font-size: 10px; color: var(--pink-dark); opacity: 0.6; letter-spacing: 2px;
+  }
+
+  header::after {
+    content: '✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦ ✿ ✦';
+    position: absolute; bottom: 10px; left: 0; right: 0;
+    font-size: 10px; color: var(--lav-dark); opacity: 0.6; letter-spacing: 2px;
+  }
+
+  h1 {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 2.4rem;
+    color: var(--pink-dark);
+    text-shadow: 3px 3px 0 var(--lavender), 5px 5px 0 rgba(155,130,224,0.3);
+    letter-spacing: 2px;
+    margin-bottom: 0.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem; color: var(--text-soft); font-weight: 600;
+    letter-spacing: 3px; text-transform: uppercase;
+  }
+
+  .main-layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    min-height: calc(100vh - 120px);
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    background: #fff0f8;
+    border-right: 2px dashed var(--border);
+    padding: 1rem 0.8rem;
+    overflow-y: auto;
+  }
+
+  .sidebar-title {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 1.1rem;
+    color: var(--lav-dark);
+    text-align: center;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1.5px dotted var(--lavender);
+  }
+
+  .member-list {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-bottom: 1.2rem;
+  }
+
+  .member-btn {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px;
+    border-radius: 20px;
+    border: 2px solid transparent;
+    background: var(--card-bg);
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.8rem; font-weight: 700;
+    color: var(--text);
+    transition: all 0.2s;
+    box-shadow: 2px 2px 0 var(--shadow);
+  }
+
+  .member-btn:hover { transform: translateX(3px); }
+  .member-btn.active {
+    border-color: var(--pink-dark);
+    background: var(--pink-light);
+    color: var(--pink-dark);
+  }
+
+  .member-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: white;
+    flex-shrink: 0;
+  }
+
+  /* CLOSET PANEL */
+  .closet-panel {
+    padding: 1rem;
+    overflow-y: auto;
+  }
+
+  .closet-title {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 1.4rem;
+    color: var(--text);
+    margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 8px;
+  }
+
+  .active-member-name {
+    color: var(--pink-dark);
+  }
+
+  .closet-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+  }
+
+  .category-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    border: 2px solid var(--border);
+    padding: 0.8rem;
+    box-shadow: 3px 3px 0 var(--shadow);
+  }
+
+  .category-header {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 1rem;
+    margin-bottom: 0.6rem;
+    display: flex; align-items: center; gap: 6px;
+  }
+
+  .cat-icon { font-size: 1.2rem; }
+
+  .item-row {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .item-btn {
+    padding: 5px 10px;
+    border-radius: 20px;
+    border: 1.5px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    color: var(--text-soft);
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 4px;
+  }
+
+  .item-btn:hover {
+    border-color: var(--pink-dark);
+    background: var(--pink-light);
+    color: var(--pink-dark);
+    transform: scale(1.04);
+  }
+
+  .item-btn.selected {
+    background: var(--pink-dark);
+    border-color: var(--pink-dark);
+    color: white;
+    box-shadow: 2px 2px 0 rgba(232,122,170,0.4);
+  }
+
+  .item-btn .item-emoji { font-size: 1rem; }
+
+  /* STAGE */
+  .stage-section {
+    grid-column: 1 / -1;
+    padding: 1rem 1.5rem 2rem;
+    background: linear-gradient(180deg, #fce8f5 0%, var(--bg) 100%);
+    border-top: 2px dashed var(--border);
+  }
+
+  .stage-title {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 1.5rem;
+    color: var(--lav-dark);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  .stage-row {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .character-card {
+    background: var(--card-bg);
+    border-radius: 20px;
+    border: 2px solid var(--border);
+    padding: 0.8rem 0.6rem 0.6rem;
+    text-align: center;
+    width: 115px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    box-shadow: 3px 4px 0 var(--shadow);
+  }
+
+  .character-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 3px 8px 0 var(--shadow);
+  }
+
+  .character-card.active-char {
+    border-color: var(--pink-dark);
+    box-shadow: 0 0 0 3px var(--pink), 3px 8px 0 var(--shadow);
+  }
+
+  .char-sprite {
+    position: relative;
+    width: 70px; height: 120px;
+    margin: 0 auto 6px;
+  }
+
+  /* Character SVG layer system */
+  .char-sprite svg {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+
+  .char-name {
+    font-family: 'Gochi Hand', cursive;
+    font-size: 0.85rem;
+    color: var(--text);
+    margin-bottom: 3px;
+  }
+
+  .char-outfit-tags {
+    display: flex; flex-wrap: wrap; gap: 2px;
+    justify-content: center;
+  }
+
+  .outfit-tag {
+    font-size: 0.62rem;
+    background: var(--lav-light);
+    color: var(--lav-dark);
+    border-radius: 8px;
+    padding: 1px 5px;
+    font-weight: 700;
+  }
+
+  .active-badge {
+    position: absolute;
+    top: -8px; right: -8px;
+    background: var(--pink-dark);
+    color: white;
+    border-radius: 50%;
+    width: 20px; height: 20px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px; font-weight: 800;
+  }
+
+  .reset-btn {
+    background: none; border: 2px dashed var(--border);
+    border-radius: 12px; padding: 4px 12px;
+    font-family: 'Nunito', sans-serif; font-size: 0.75rem;
+    color: var(--text-soft); cursor: pointer; margin-top: 4px;
+    transition: all 0.15s;
+  }
+  .reset-btn:hover { background: var(--pink-light); border-color: var(--pink-dark); color: var(--pink-dark); }
+
+  /* Layout wrapper */
+  .app-wrapper {
+    display: flex; flex-direction: column;
+  }
+
+  .top-area {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 0;
+    flex: 1;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    .top-area { grid-template-columns: 1fr; }
+    .sidebar { border-right: none; border-bottom: 2px dashed var(--border); }
+    .member-list { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+    h1 { font-size: 1.6rem; }
+  }
+
+  /* Animations */
+  @keyframes bounce-in {
+    0% { transform: scale(0.7); opacity: 0; }
+    70% { transform: scale(1.06); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .character-card { animation: bounce-in 0.3s ease both; }
+
+  .sparkle {
+    position: fixed; pointer-events: none; z-index: 9999;
+    font-size: 1.2rem;
+    animation: sparkle-float 0.8s ease forwards;
+  }
+  @keyframes sparkle-float {
+    0% { opacity: 1; transform: translateY(0) scale(1); }
+    100% { opacity: 0; transform: translateY(-60px) scale(0.5); }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-wrapper">
+
+<header>
+  <h1>✦ ZB1 Style Studio ✦</h1>
+  <p class="subtitle">ZeroBaseOne · Dress to Impress</p>
+</header>
+
+<div class="top-area">
+
+  <!-- SIDEBAR: member select + closet categories -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-title">✿ Members ✿</div>
+    <div class="member-list" id="memberList"></div>
+    <div class="sidebar-title">✦ Closet ✦</div>
+    <div id="categoryNav"></div>
+  </aside>
+
+  <!-- CLOSET PANEL -->
+  <section class="closet-panel" id="closetPanel">
+    <div class="closet-title">
+      <span id="closetMemberLabel" class="active-member-name">Hanbin</span>'s Closet
+    </div>
+    <div class="closet-grid" id="closetGrid"></div>
+  </section>
+
+</div>
+
+<!-- STAGE -->
+<section class="stage-section">
+  <div class="stage-title">✦ The Stage ✦</div>
+  <div class="stage-row" id="stageRow"></div>
+</section>
+
+</div>
+
+<script>
+const MEMBERS = [
+  { name: "Hanbin", color: "#e87aaa", light: "#fde8f2", emoji: "👑", pos: 0 },
+  { name: "Ricky",  color: "#9b82e0", light: "#ede8fb", emoji: "🌸", pos: 1 },
+  { name: "Tae-rae", color: "#4bb5e8", light: "#e8f5fc", emoji: "⭐", pos: 2 },
+  { name: "Gyuvin", color: "#5ec4a0", light: "#e8fbf4", emoji: "🍀", pos: 3 },
+  { name: "Zhang Hao", color: "#f09a6a", light: "#fff2ea", emoji: "🌙", pos: 4 },
+  { name: "Gunwook", color: "#c97de0", light: "#f4e8fb", emoji: "🎸", pos: 5 },
+  { name: "Yujin",  color: "#e0c44b", light: "#fdf8e0", emoji: "🌻", pos: 6 },
+  { name: "Seungeon", color: "#5baae0", light: "#e8f3fb", emoji: "🌊", pos: 7 },
+  { name: "Jiwoong", color: "#e07878", light: "#fbeaea", emoji: "🦊", pos: 8 },
+  { name: "Matthew", color: "#48b89a", light: "#e5f7f2", emoji: "🍃", pos: 9 },
+];
+
+const CLOSET = {
+  shirts: {
+    icon: "👕", color: "#e87aaa",
+    items: [
+      { id: "shirt_1", label: "Crop Tee", emoji: "👕", color: "#f9c" },
+      { id: "shirt_2", label: "Striped Top", emoji: "👘", color: "#adf" },
+      { id: "shirt_3", label: "Ruffle Blouse", emoji: "🌸", color: "#fcd" },
+      { id: "shirt_4", label: "Band Shirt", emoji: "🎸", color: "#888" },
+      { id: "shirt_5", label: "Ribbed Knit", emoji: "🧶", color: "#bfa" },
+    ]
+  },
+  pants: {
+    icon: "👖", color: "#9b82e0",
+    items: [
+      { id: "pants_1", label: "Wide Leg", emoji: "👖", color: "#8ac" },
+      { id: "pants_2", label: "Plaid Trousers", emoji: "🏁", color: "#fda" },
+      { id: "pants_3", label: "Baggy Jeans", emoji: "💙", color: "#6af" },
+      { id: "pants_4", label: "Mini Skirt", emoji: "🌸", color: "#f9c" },
+      { id: "pants_5", label: "Leather Pants", emoji: "🖤", color: "#555" },
+    ]
+  },
+  jackets: {
+    icon: "🧥", color: "#4bb5e8",
+    items: [
+      { id: "jacket_1", label: "Blazer", emoji: "🧥", color: "#aac" },
+      { id: "jacket_2", label: "Fur Coat", emoji: "🐑", color: "#eee" },
+      { id: "jacket_3", label: "Sequin Jacket", emoji: "✨", color: "#fda" },
+      { id: "jacket_4", label: "Varsity", emoji: "🏆", color: "#c55" },
+      { id: "jacket_5", label: "Trench Coat", emoji: "🌧️", color: "#ca8" },
+    ]
+  },
+  shoes: {
+    icon: "👟", color: "#5ec4a0",
+    items: [
+      { id: "shoes_1", label: "Chunky Sneakers", emoji: "👟", color: "#fff" },
+      { id: "shoes_2", label: "Platform Boots", emoji: "🥾", color: "#333" },
+      { id: "shoes_3", label: "Mary Janes", emoji: "👞", color: "#c44" },
+      { id: "shoes_4", label: "Strappy Heels", emoji: "👠", color: "#f9c" },
+      { id: "shoes_5", label: "Loafers", emoji: "🍫", color: "#964" },
+    ]
+  },
+  jewelry: {
+    icon: "💎", color: "#c97de0",
+    items: [
+      { id: "jewel_1", label: "Pearl Necklace", emoji: "📿", color: "#eee" },
+      { id: "jewel_2", label: "Gold Chains", emoji: "⛓️", color: "#fda" },
+      { id: "jewel_3", label: "Star Earrings", emoji: "⭐", color: "#ff9" },
+      { id: "jewel_4", label: "Charm Bracelet", emoji: "🔮", color: "#c9f" },
+      { id: "jewel_5", label: "Choker", emoji: "🖤", color: "#444" },
+    ]
+  },
+  bags: {
+    icon: "👜", color: "#f09a6a",
+    items: [
+      { id: "bag_1", label: "Mini Backpack", emoji: "🎒", color: "#f9c" },
+      { id: "bag_2", label: "Tote Bag", emoji: "🛍️", color: "#adf" },
+      { id: "bag_3", label: "Baguette Bag", emoji: "👜", color: "#fda" },
+      { id: "bag_4", label: "Chain Bag", emoji: "⛓️", color: "#aaa" },
+      { id: "bag_5", label: "Furry Bag", emoji: "🐾", color: "#fce" },
+    ]
+  }
+};
+
+const CATEGORY_NAMES = {
+  shirts: "Shirts", pants: "Bottoms", jackets: "Jackets",
+  shoes: "Shoes", jewelry: "Jewelry", bags: "Bags"
+};
+
+// State
+let activeMember = 0;
+const outfits = MEMBERS.map(() => ({
+  shirts: null, pants: null, jackets: null, shoes: null, jewelry: null, bags: null
+}));
+
+function getMemberColor(i) { return MEMBERS[i].color; }
+function getMemberLight(i) { return MEMBERS[i].light; }
+
+// Draw character SVG — cute chibi style
+function drawCharSVG(memberIdx, outfit) {
+  const m = MEMBERS[memberIdx];
+  const c = m.color;
+  const shirtColor = outfit.shirts ? CLOSET.shirts.items.find(x => x.id === outfit.shirts)?.color || "#fcc" : "#eee";
+  const pantsColor = outfit.pants ? CLOSET.pants.items.find(x => x.id === outfit.pants)?.color || "#acf" : "#e0e0e0";
+  const jacketColor = outfit.jackets ? CLOSET.jackets.items.find(x => x.id === outfit.jackets)?.color || null : null;
+  const shoeColor = outfit.shoes ? CLOSET.shoes.items.find(x => x.id === outfit.shoes)?.color || "#ccc" : "#ccc";
+  const hasJewel = !!outfit.jewelry;
+  const hasBag = !!outfit.bags;
+
+  // Check for mini skirt (different leg rendering)
+  const isMiniSkirt = outfit.pants === "pants_4";
+  const isLeatherPants = outfit.pants === "pants_5";
+  const hasJacket = !!outfit.jackets;
+  const isFurCoat = outfit.jackets === "jacket_2";
+  const isSequin = outfit.jackets === "jacket_3";
+
+  // Skin tones — slight variation per member
+  const skinTones = ["#ffd6b3","#ffe0c0","#fdd5b0","#ffe5c5","#fcd0a8","#ffe2b8","#ffd8b3","#fde8c5","#ffd0a5","#f5c89a"];
+  const skin = skinTones[memberIdx];
+
+  // Hair styles / colors
+  const hairColors = ["#1a0a0a","#5c3a1e","#2a1a0a","#c8960a","#0a1a3a","#3a0a3a","#0a0a0a","#1a3a0a","#3a1a0a","#2a1a0a"];
+  const hair = hairColors[memberIdx];
+
+  const hasBagEmoji = hasBag ? CLOSET.bags.items.find(x => x.id === outfit.bags)?.emoji || "👜" : null;
+
+  // Eye styles per member
+  const eyeShapes = [
+    `<ellipse cx="30" cy="38" rx="4" ry="3.5" fill="#222"/><ellipse cx="50" cy="38" rx="4" ry="3.5" fill="#222"/><ellipse cx="30" cy="37" rx="1.5" ry="1.5" fill="white"/><ellipse cx="50" cy="37" rx="1.5" ry="1.5" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="3.5" ry="4" fill="#222"/><ellipse cx="50" cy="38" rx="3.5" ry="4" fill="#222"/><circle cx="31" cy="37" r="1.3" fill="white"/><circle cx="51" cy="37" r="1.3" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="4" ry="3" fill="#222"/><ellipse cx="50" cy="38" rx="4" ry="3" fill="#222"/><circle cx="31" cy="37" r="1.5" fill="white"/><circle cx="51" cy="37" r="1.5" fill="white"/>`,
+    `<circle cx="30" cy="38" r="4" fill="#222"/><circle cx="50" cy="38" r="4" fill="#222"/><circle cx="31" cy="37" r="1.5" fill="white"/><circle cx="51" cy="37" r="1.5" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="3.5" ry="3.5" fill="#222"/><ellipse cx="50" cy="38" rx="3.5" ry="3.5" fill="#222"/><circle cx="31" cy="37" r="1.2" fill="white"/><circle cx="51" cy="37" r="1.2" fill="white"/>`,
+    `<ellipse cx="30" cy="39" rx="4.5" ry="3" fill="#222"/><ellipse cx="50" cy="39" rx="4.5" ry="3" fill="#222"/><circle cx="31" cy="38" r="1.5" fill="white"/><circle cx="51" cy="38" r="1.5" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="4" ry="4" fill="#222"/><ellipse cx="50" cy="38" rx="4" ry="4" fill="#222"/><circle cx="31" cy="37" r="1.6" fill="white"/><circle cx="51" cy="37" r="1.6" fill="white"/>`,
+    `<ellipse cx="30" cy="37.5" rx="4" ry="3.5" fill="#222"/><ellipse cx="50" cy="37.5" rx="4" ry="3.5" fill="#222"/><circle cx="31" cy="37" r="1.4" fill="white"/><circle cx="51" cy="37" r="1.4" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="4.5" ry="3.5" fill="#222"/><ellipse cx="50" cy="38" rx="4.5" ry="3.5" fill="#222"/><circle cx="31" cy="37" r="1.5" fill="white"/><circle cx="51" cy="37" r="1.5" fill="white"/>`,
+    `<ellipse cx="30" cy="38" rx="4" ry="3" fill="#222"/><ellipse cx="50" cy="38" rx="4" ry="3" fill="#222"/><circle cx="29" cy="37" r="1.4" fill="white"/><circle cx="49" cy="37" r="1.4" fill="white"/>`,
+  ];
+
+  // Hair styles
+  const hairSVGs = [
+    // Hanbin - long front pieces
+    `<ellipse cx="40" cy="20" rx="18" ry="16" fill="${hair}"/>
+     <rect x="22" y="20" width="4" height="22" rx="2" fill="${hair}"/>
+     <rect x="54" y="20" width="4" height="22" rx="2" fill="${hair}"/>
+     <ellipse cx="40" cy="14" rx="14" ry="8" fill="${hair}"/>`,
+    // Ricky - side swept
+    `<ellipse cx="40" cy="18" rx="19" ry="15" fill="${hair}"/>
+     <ellipse cx="40" cy="13" rx="15" ry="7" fill="${hair}"/>
+     <rect x="24" y="18" width="18" height="12" rx="0" fill="${hair}"/>`,
+    // Tae-rae - fluffy
+    `<ellipse cx="40" cy="17" rx="20" ry="16" fill="${hair}"/>
+     <ellipse cx="26" cy="20" rx="7" ry="10" fill="${hair}"/>
+     <ellipse cx="54" cy="20" rx="7" ry="10" fill="${hair}"/>
+     <ellipse cx="40" cy="11" rx="16" ry="8" fill="${hair}"/>`,
+    // Gyuvin - wavy/curly blonde
+    `<ellipse cx="40" cy="18" rx="20" ry="15" fill="${hair}"/>
+     <ellipse cx="40" cy="12" rx="16" ry="8" fill="${hair}"/>
+     <ellipse cx="25" cy="22" rx="6" ry="8" fill="${hair}"/>
+     <ellipse cx="55" cy="22" rx="6" ry="8" fill="${hair}"/>`,
+    // Zhang Hao - dark sleek
+    `<ellipse cx="40" cy="17" rx="18" ry="14" fill="${hair}"/>
+     <ellipse cx="40" cy="12" rx="14" ry="7" fill="${hair}"/>
+     <rect x="24" y="17" width="5" height="16" rx="2.5" fill="${hair}"/>
+     <rect x="51" y="17" width="5" height="16" rx="2.5" fill="${hair}"/>`,
+    // Gunwook - messy medium
+    `<ellipse cx="40" cy="18" rx="20" ry="15" fill="${hair}"/>
+     <ellipse cx="40" cy="12" rx="17" ry="9" fill="${hair}"/>
+     <rect x="22" y="16" width="5" height="20" rx="2" fill="${hair}"/>
+     <rect x="53" y="16" width="5" height="20" rx="2" fill="${hair}"/>
+     <ellipse cx="32" cy="10" rx="5" ry="5" fill="${hair}"/>
+     <ellipse cx="48" cy="9" rx="5" ry="5" fill="${hair}"/>`,
+    // Yujin - short neat
+    `<ellipse cx="40" cy="17" rx="18" ry="13" fill="${hair}"/>
+     <ellipse cx="40" cy="11" rx="14" ry="7" fill="${hair}"/>
+     <rect x="24" y="17" width="4" height="12" rx="2" fill="${hair}"/>
+     <rect x="52" y="17" width="4" height="12" rx="2" fill="${hair}"/>`,
+    // Seungeon - longer sides
+    `<ellipse cx="40" cy="18" rx="19" ry="14" fill="${hair}"/>
+     <ellipse cx="40" cy="12" rx="15" ry="8" fill="${hair}"/>
+     <rect x="23" y="18" width="5" height="25" rx="2.5" fill="${hair}"/>
+     <rect x="52" y="18" width="5" height="25" rx="2.5" fill="${hair}"/>`,
+    // Jiwoong - medium wavy
+    `<ellipse cx="40" cy="18" rx="20" ry="14" fill="${hair}"/>
+     <ellipse cx="40" cy="11" rx="16" ry="8" fill="${hair}"/>
+     <ellipse cx="24" cy="24" rx="6" ry="10" fill="${hair}"/>
+     <ellipse cx="56" cy="24" rx="6" ry="10" fill="${hair}"/>`,
+    // Matthew - curly voluminous
+    `<ellipse cx="40" cy="19" rx="21" ry="15" fill="${hair}"/>
+     <ellipse cx="40" cy="11" rx="17" ry="9" fill="${hair}"/>
+     <ellipse cx="23" cy="20" rx="7" ry="9" fill="${hair}"/>
+     <ellipse cx="57" cy="20" rx="7" ry="9" fill="${hair}"/>
+     <ellipse cx="28" cy="12" rx="6" ry="5" fill="${hair}"/>
+     <ellipse cx="52" cy="12" rx="6" ry="5" fill="${hair}"/>
+     <ellipse cx="40" cy="9" rx="7" ry="4" fill="${hair}"/>`,
+  ];
+
+  const legsHTML = isMiniSkirt ?
+    `<path d="M30 82 Q32 96 30 110 Q38 112 38 110 Q39 96 40 90 Q41 96 42 110 Q50 112 50 110 Q48 96 50 82 Z" fill="${pantsColor}"/>
+     <rect x="32" y="74" width="16" height="14" rx="3" fill="${pantsColor}"/>` :
+    `<rect x="30" y="74" width="10" height="30" rx="4" fill="${pantsColor}"/>
+     <rect x="40" y="74" width="10" height="30" rx="4" fill="${pantsColor}"/>`;
+
+  const jacketHTML = hasJacket ?
+    `<path d="M22 55 Q18 52 20 72 L26 72 L26 58 Z" fill="${jacketColor}" opacity="0.9"/>
+    <path d="M58 55 Q62 52 60 72 L54 72 L54 58 Z" fill="${jacketColor}" opacity="0.9"/>
+    <path d="M26 56 Q33 54 40 55 Q47 54 54 56 L54 72 L26 72 Z" fill="${jacketColor}" opacity="${isFurCoat ? '1' : '0.85'}"/>
+    ${isFurCoat ? `<ellipse cx="31" cy="57" rx="4" ry="3" fill="white" opacity="0.7"/><ellipse cx="40" cy="56" rx="4" ry="2" fill="white" opacity="0.7"/><ellipse cx="49" cy="57" rx="4" ry="3" fill="white" opacity="0.7"/>` : ''}
+    ${isSequin ? `<circle cx="30" cy="60" r="2" fill="${c}" opacity="0.9"/><circle cx="36" cy="62" r="2" fill="${c}" opacity="0.9"/><circle cx="42" cy="60" r="2" fill="${c}" opacity="0.9"/><circle cx="48" cy="62" r="2" fill="${c}" opacity="0.9"/><circle cx="54" cy="60" r="2" fill="${c}" opacity="0.9"/>` : ''}
+    <line x1="40" y1="55" x2="40" y2="72" stroke="white" stroke-width="1.5" opacity="0.5"/>` : '';
+
+  const bagHTML = hasBag ?
+    `<text x="62" y="88" font-size="14" text-anchor="middle">${hasBagEmoji}</text>` : '';
+
+  const jewelHTML = hasJewel ?
+    `<ellipse cx="40" cy="50" rx="8" ry="1.5" fill="none" stroke="${c}" stroke-width="1.5" opacity="0.8"/>
+     <circle cx="40" cy="48" r="2" fill="${c}" opacity="0.9"/>` : '';
+
+  return `<svg viewBox="0 0 80 120" xmlns="http://www.w3.org/2000/svg">
+    <!-- Shadow -->
+    <ellipse cx="40" cy="118" rx="18" ry="3" fill="rgba(0,0,0,0.1)"/>
+    <!-- Shoes -->
+    <ellipse cx="35" cy="113" rx="7" ry="4" fill="${shoeColor}"/>
+    <ellipse cx="45" cy="113" rx="7" ry="4" fill="${shoeColor}"/>
+    <!-- Legs -->
+    ${legsHTML}
+    <!-- Body / Shirt -->
+    <path d="M26 54 Q22 52 20 72 L60 72 Q58 52 54 54 Q47 57 40 57 Q33 57 26 54 Z" fill="${shirtColor}"/>
+    <!-- Arms -->
+    <path d="M22 56 Q14 62 16 74 Q20 76 22 74 Q21 66 26 60 Z" fill="${skin}"/>
+    <path d="M58 56 Q66 62 64 74 Q60 76 58 74 Q59 66 54 60 Z" fill="${skin}"/>
+    <!-- Jacket layer -->
+    ${jacketHTML}
+    <!-- Neck -->
+    <rect x="36" y="46" width="8" height="12" rx="3" fill="${skin}"/>
+    <!-- Head -->
+    <ellipse cx="40" cy="32" rx="18" ry="19" fill="${skin}"/>
+    <!-- Hair back -->
+    ${hairSVGs[memberIdx]}
+    <!-- Cheeks -->
+    <ellipse cx="27" cy="40" rx="5" ry="3" fill="${c}" opacity="0.35"/>
+    <ellipse cx="53" cy="40" rx="5" ry="3" fill="${c}" opacity="0.35"/>
+    <!-- Eyes -->
+    ${eyeShapes[memberIdx]}
+    <!-- Eyelashes -->
+    <path d="M26 35 Q27 33 30 34" stroke="#222" stroke-width="1.2" fill="none"/>
+    <path d="M50 35 Q53 33 54 34" stroke="#222" stroke-width="1.2" fill="none"/>
+    <!-- Nose -->
+    <ellipse cx="37" cy="43" rx="1.5" ry="1" fill="${c}" opacity="0.5"/>
+    <ellipse cx="43" cy="43" rx="1.5" ry="1" fill="${c}" opacity="0.5"/>
+    <!-- Mouth -->
+    <path d="M34 47 Q40 52 46 47" stroke="#d06" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <!-- Member color accent -->
+    <circle cx="40" cy="8" r="5" fill="${c}" opacity="0.7"/>
+    <text x="40" y="11" text-anchor="middle" font-size="6" fill="white">${m.emoji}</text>
+    <!-- Jewelry -->
+    ${jewelHTML}
+    <!-- Bag -->
+    ${bagHTML}
+  </svg>`;
+}
+
+// Render sidebar members
+function renderSidebar() {
+  const list = document.getElementById('memberList');
+  list.innerHTML = '';
+  MEMBERS.forEach((m, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'member-btn' + (i === activeMember ? ' active' : '');
+    btn.innerHTML = `<span class="member-dot" style="background:${m.color}">${m.emoji}</span> ${m.name}`;
+    btn.addEventListener('click', () => {
+      activeMember = i;
+      renderSidebar();
+      renderCloset();
+      renderStage();
+    });
+    list.appendChild(btn);
+  });
+
+  // Category nav
+  const nav = document.getElementById('categoryNav');
+  nav.innerHTML = '';
+  Object.entries(CLOSET).forEach(([cat, data]) => {
+    const btn = document.createElement('div');
+    btn.style.cssText = `padding:5px 10px;font-size:0.78rem;font-weight:700;color:var(--text-soft);cursor:pointer;border-radius:8px;display:flex;align-items:center;gap:5px;margin-bottom:3px;`;
+    btn.innerHTML = `<span>${data.icon}</span> ${CATEGORY_NAMES[cat]}`;
+    btn.addEventListener('click', () => {
+      const el = document.getElementById('cat-' + cat);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+    nav.appendChild(btn);
+  });
+}
+
+// Render closet
+function renderCloset() {
+  document.getElementById('closetMemberLabel').textContent = MEMBERS[activeMember].name;
+  const grid = document.getElementById('closetGrid');
+  grid.innerHTML = '';
+
+  Object.entries(CLOSET).forEach(([cat, data]) => {
+    const card = document.createElement('div');
+    card.className = 'category-card';
+    card.id = 'cat-' + cat;
+
+    const header = document.createElement('div');
+    header.className = 'category-header';
+    header.style.color = data.color;
+    header.innerHTML = `<span class="cat-icon">${data.icon}</span> ${CATEGORY_NAMES[cat]}`;
+    card.appendChild(header);
+
+    const row = document.createElement('div');
+    row.className = 'item-row';
+
+    // "None" option
+    const noneBtn = document.createElement('button');
+    noneBtn.className = 'item-btn' + (!outfits[activeMember][cat] ? ' selected' : '');
+    noneBtn.style.cssText = `border-color: #ccc; color: #aaa;`;
+    noneBtn.innerHTML = `<span>✕</span> None`;
+    noneBtn.addEventListener('click', () => {
+      outfits[activeMember][cat] = null;
+      renderCloset();
+      renderStage();
+      spawnSparkle(noneBtn);
+    });
+    row.appendChild(noneBtn);
+
+    data.items.forEach(item => {
+      const btn = document.createElement('button');
+      btn.className = 'item-btn' + (outfits[activeMember][cat] === item.id ? ' selected' : '');
+      btn.innerHTML = `<span class="item-emoji">${item.emoji}</span> ${item.label}`;
+      btn.addEventListener('click', () => {
+        outfits[activeMember][cat] = item.id;
+        renderCloset();
+        renderStage();
+        spawnSparkle(btn);
+      });
+      row.appendChild(btn);
+    });
+
+    card.appendChild(row);
+    grid.appendChild(card);
+  });
+}
+
+// Render stage
+function renderStage() {
+  const row = document.getElementById('stageRow');
+  row.innerHTML = '';
+  MEMBERS.forEach((m, i) => {
+    const card = document.createElement('div');
+    card.className = 'character-card' + (i === activeMember ? ' active-char' : '');
+    card.style.animationDelay = `${i * 0.04}s`;
+
+    if (i === activeMember) {
+      card.innerHTML += `<div class="active-badge">✏️</div>`;
+    }
+
+    const sprite = document.createElement('div');
+    sprite.className = 'char-sprite';
+    sprite.innerHTML = drawCharSVG(i, outfits[i]);
+    card.appendChild(sprite);
+
+    const name = document.createElement('div');
+    name.className = 'char-name';
+    name.textContent = m.name;
+    card.appendChild(name);
+
+    // Outfit tags
+    const tags = document.createElement('div');
+    tags.className = 'char-outfit-tags';
+    let tagCount = 0;
+    Object.entries(outfits[i]).forEach(([cat, val]) => {
+      if (val && tagCount < 3) {
+        const catData = CLOSET[cat];
+        const itemData = catData.items.find(x => x.id === val);
+        if (itemData) {
+          const tag = document.createElement('span');
+          tag.className = 'outfit-tag';
+          tag.textContent = itemData.emoji + ' ' + itemData.label;
+          tags.appendChild(tag);
+          tagCount++;
+        }
+      }
+    });
+    card.appendChild(tags);
+
+    const resetBtn = document.createElement('button');
+    resetBtn.className = 'reset-btn';
+    resetBtn.textContent = '↺ Reset';
+    resetBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      outfits[i] = { shirts: null, pants: null, jackets: null, shoes: null, jewelry: null, bags: null };
+      renderStage();
+      if (i === activeMember) renderCloset();
+    });
+    card.appendChild(resetBtn);
+
+    card.addEventListener('click', () => {
+      activeMember = i;
+      renderSidebar();
+      renderCloset();
+      renderStage();
+      document.querySelector('.closet-panel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+
+    row.appendChild(card);
+  });
+}
+
+// Sparkle effect
+function spawnSparkle(el) {
+  const emojis = ['✨', '💫', '⭐', '🌸', '✿', '💕'];
+  const rect = el.getBoundingClientRect();
+  for (let i = 0; i < 3; i++) {
+    const s = document.createElement('div');
+    s.className = 'sparkle';
+    s.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    s.style.left = (rect.left + Math.random() * rect.width) + 'px';
+    s.style.top = (rect.top + window.scrollY - 10) + 'px';
+    s.style.animationDelay = (i * 0.1) + 's';
+    document.body.appendChild(s);
+    setTimeout(() => s.remove(), 900);
+  }
+}
+
+// Init
+renderSidebar();
+renderCloset();
+renderStage();
+</script>
+</body>
+</html>
