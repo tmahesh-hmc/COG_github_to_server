@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steampunk Full Adder Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Special+Elite&display=swap');
+
+        /* Main Steampunk Styles */
+        body {
+            background-color: #1a0f00; /* Dark, moody brown */
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png'); /* Textured wood background */
+            color: #fdf6e3; /* Cream font */
+            font-family: 'Special Elite', cursive; /* Old-school typewriter font */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif; /* Fancy, old-world heading font */
+            color: #d4af37; /* Brass/Gold accents */
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        /* Layout */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+        }
+
+        /* Chunking segments */
+        section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background: rgba(40, 26, 13, 0.9); /* Translucent dark brown panel */
+            border: 5px solid #d4af37; /* Brass border */
+            box-shadow: 10px 10px 20px #000;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        section::after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 10px;
+            background: radial-gradient(#d4af37, transparent);
+        }
+
+        /* Specific Element Styling */
+        .intro-text {
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        .circuit-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 40px auto 10px auto;
+            border: 4px solid #d4af37;
+            box-shadow: 5px 5px 15px #000;
+        }
+
+        .citation-link {
+            display: block;
+            text-align: center;
+            font-size: 0.9em;
+            color: #d4af37;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .citation-link:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        /* Truth Table Style */
+        .truth-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            font-size: 1.1em;
+            background: #281a0d;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid #d4af37;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background-color: #3e2a16;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+        }
+
+        .truth-table tr:nth-child(even) {
+            background-color: #332211;
+        }
+
+        /* Logic Definitions */
+        .logic-definition {
+            font-style: italic;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Rotating Gear Link - Only One in the corner */
+        #hmc-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #hmc-link .gear-emoji {
+            font-size: 90px; /* Makes the emoji large */
+            display: inline-block;
+            line-height: 120px;
+            text-align: center;
+            width: 120px;
+            height: 120px;
+            transform-origin: center center; /* Ensures it spins perfectly in place */
+            animation: spin 8s linear infinite; /* Constantly rotating */
+        }
+
+        #hmc-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Page Dividers */
+        .rivets {
+            text-align: center;
+            font-size: 2em;
+            color: #d4af37;
+            margin: 20px 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <header style="text-align: center; margin-bottom: 60px;">
+            <h1>Building a Full Adder!</h1>
+            <h3>How Does the Binary Addition Work?</h3>
+        </header>
+
+        <section id="intro">
+            <h2>Introduction</h2>
+            <div class="intro-text">
+                <p>Welcome, everybody! Before you physically construct your hardware, we must first understand the math that our hardware is able to compute.</p>
+                <p>A Full Adder, like the one we are making, has <strong>3 inputs</strong>:</p>
+                <ul>
+                    <li>Input <strong>A</strong></li>
+                    <li>Input <strong>B</strong></li>
+                    <li>The <strong>C<sub>in</sub></strong> (Carry-in) value.</li>
+                </ul>
+                <p>For this practical demonstration, think of C<sub>in</sub> as just another digit, like A and B. However, in larger contraptions (like a ripple carry adder), this value is taken from the carry-out of the previous full adder mechanism.</p>
+            </div>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="example-setup">
+            <h2>Our example</h2>
+            <p>To demonstrate, we shall observe what occurs when we input the  (or our "normal" number system) digits <strong>110</strong> into our Full Adder. Additionally, take a look at the online circuitverse representation of exactly what we will be building!.</p>
+            <ul>
+                <li><strong>A = 1</strong> (Top Input)</li>
+                <li><strong>B = 1</strong> (Middle Input)</li>
+                <li><strong>C<sub>in</sub> = 0</strong> (Bottom Input)</li>
+            </ul>
+            
+            <img src="circuitverseFullAdder.png" alt="A Full Adder logic circuit diagram from CircuitVerse, built with 3 inputs, XOR, AND, and OR gates, producing a final Sum and Carry-out of '1'." class="circuit-image">
+            <a href="https://circuitverse.org/simulator/edit/full-adder-3f51ccb5-e357-43c3-a743-99b5c39655a2" target="_blank" class="citation-link">FIG. 1: Interactive Prototype Schema sourced via CircuitVerse</a>
+            
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="xor-gates">
+            <h2>Using the XOR gates to Calculate the "Sum" Component of the Binary Answer</h2>
+            <p>Our device first employs <strong>two XOR (Exclusive OR) gates</strong> to compute the "Sum" part of the output.</p>
+            <span class="logic-definition">XOR Gates: If the inputs are the same number (e.g., 0,0 or 1,1), the output is 0. If the inputs are different numbers (e.g., 0,1 or 1,0), the output is 1.</span>
+
+            <p><strong>Step A:</strong> The first XOR gate accepts the initial decimal digits, A (1) and B (1). According to XOR logic, since they are the same number, it outputs:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">1 +<sub>xor</sub> 1 = 0</p>
+            
+            <p><strong>Step B:</strong> The second XOR gate accepts this 0 output from Step A and our third input, C<sub>in</sub> (0). As both inputs are 0 (same number), the XOR law produces a final Sum of:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">0 +<sub>xor</sub> 0 = 0</p>
+            
+            <p style="margin-top: 20px;">The mechanism has determined that the <em>bit on the right-hand side (Sum)</em> of our final answer is 0.</p>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="carry-out">
+            <h2>Using AND and OR Gates to Calculate the "Carry-Out" Component</h2>
+            <p>Next, the adder activates <strong>two AND gates</strong> to process the "Carry-out" part of the output.</p>
+            <span class="logic-definition">AND Gate Logic: This gate produces a 1 output ONLY when BOTH inputs are 1. Any other scenario results in 0.</span>
+
+            <p>For our example, the first AND gate is fed inputs A (1) and B (1). Since they are both 1, the gate produces an output of <strong>1</strong>.</p>
+            <p>The second AND gate is fed C<sub>in</sub> (0) and the output of the FIRST XOR gate (which was 0). Since they are both 0, the output is <strong>0</strong>.</p>
+            
+            <p style="margin-top: 30px;">Lastly, the full adder employs a <strong>single OR gate</strong> for the final Carry-out summation.</p>
+            <span class="logic-definition">OR Gate Logic: This gate produces a 1 if any or all inputs are 1. A 0 is produced only if both inputs are 0.</span>
+
+            <p>This single OR gate accepts the results from our two AND gates: <strong>1</strong> and <strong>0</strong>. Since there is a 1 present, the OR law gives us a final Carry-out output of:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">1 +<sub>or</sub> 0 = 1</p>
+            
+            <p style="margin-top: 20px;">The mechanism has determined that the <em>high-order bit (Carry-out)</em> of our final answer is 1.</p>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion of the Proof</h2>
+            <div class="intro-text">
+                <p>We input A=1, B=1, and Cin=0. Our initial mathematical hypothesis was 1+1+0=2 (or '10' in binary).</p>
+                <p>Reading our outputs in order: Carry-out first, then Sum, we see that our mechanized adder produced the values:</p>
+                <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.5em; text-shadow: 2px 2px #000;">1 0</p>
+                <p>Indeed! 1+1+0 = 10<sub>binary</sub>. The full adder logic seems complicated -- and it is! Congrats on making it through. These logic gates make up the most fundamental parts of computers!</p>
+            </div>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="truth-table">
+            <h2>Appendices: The Full Adder Truth Table</h2>
+            <p>Here is the full adder truth table, detailing all possible input combinations and their required outputs. We should always verify our physical constructions against this table!</p>
+            <table class="truth-table">
+                <thead>
+                    <tr>
+                        <th colspan="3">Inputs</th>
+                        <th colspan="2">Outputs</th>
+                    </tr>
+                    <tr>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C<sub>in</sub></th>
+                        <th>C<sub>out</sub></th>
+                        <th>Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                </tbody>
+            </table>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+    </div>
+
+    <div id="hmc-link" onclick="window.location.href='https://www.cs.hmc.edu/twiki/bin/view/CS5/WebHome'" title="Go to HMC CS5">
+    <span class="gear-emoji">⚙️</span>
+    </div>
+
+</body>
+</html>
