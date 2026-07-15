@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Steampunk Full Adder Lab</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Special+Elite&display=swap');
+
+        /* Main Steampunk Styles */
+        body {
+            background-color: #1a0f00; 
+            background-image: url('https://www.transparenttextures.com/patterns/dark-wood.png'); 
+            color: #fdf6e3; 
+            font-family: 'Special Elite', cursive; 
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; 
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Cinzel', serif; 
+            color: #d4af37; 
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 40px;
+            position: relative;
+        }
+
+        /* Chunking segments / Your original section styling */
+        section {
+            margin-bottom: 80px;
+            padding: 40px;
+            background: rgba(40, 26, 13, 0.9); /* Translucent dark brown panel */
+            border: 5px solid #d4af37; /* Brass border */
+            box-shadow: 10px 10px 20px #000;
+            border-radius: 15px;
+            position: relative;
+        }
+
+        section::after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 10px;
+            background: radial-gradient(#d4af37, transparent);
+        }
+
+        /* Page Dividers */
+        .rivets {
+            text-align: center;
+            font-size: 2em;
+            color: #d4af37;
+            margin: 20px 0;
+        }
+
+        /* Specific Element Styling */
+        .intro-text {
+            font-size: 1.3em;
+            line-height: 1.6;
+        }
+
+        .circuit-image {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 40px auto 10px auto;
+            border: 4px solid #d4af37;
+            box-shadow: 5px 5px 15px #000;
+        }
+
+        .citation-link {
+            display: block;
+            text-align: center;
+            font-size: 0.9em;
+            color: #d4af37;
+            text-decoration: none;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .citation-link:hover {
+            text-decoration: underline;
+            color: #fff;
+        }
+
+        /* Truth Table Style */
+        .truth-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 30px;
+            font-size: 1.1em;
+            background: #281a0d;
+        }
+
+        .truth-table th, .truth-table td {
+            border: 1px solid #d4af37;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .truth-table th {
+            background-color: #3e2a16;
+            color: #d4af37;
+            font-family: 'Cinzel', serif;
+        }
+
+        .truth-table tr:nth-child(even) {
+            background-color: #332211;
+        }
+
+        /* Logic Definitions */
+        .logic-definition {
+            font-style: italic;
+            color: #a0a0a0;
+            margin-bottom: 20px;
+            display: block;
+        }
+
+        /* Rotating Gear Link - Only One in the corner */
+        #hmc-link {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 120px;
+            height: 120px;
+            z-index: 100;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        #hmc-link .gear-emoji {
+            font-size: 90px; /* Makes the emoji large */
+            display: inline-block;
+            line-height: 120px;
+            text-align: center;
+            width: 120px;
+            height: 120px;
+            transform-origin: center center; /* Ensures it spins perfectly in place */
+            animation: spin 8s linear infinite; /* Constantly rotating */
+        }
+
+        #hmc-link:hover {
+            transform: scale(1.1);
+        }
+
+        /* Animations */
+        @keyframes spin {
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ========================================================== */
+        /* TAB SYSTEM MECHANICAL CONTROLS                             */
+        /* ========================================================== */
+        
+        .tab-switch {
+            display: none;
+        }
+
+        .tab-headers {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px; 
+            position: relative;
+            z-index: 2; 
+        }
+
+        .tab-label {
+            font-family: 'Cinzel', serif;
+            color: #a08020; 
+            background: rgba(30, 20, 10, 0.9);
+            border: 3px solid #8a6d1c; 
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px #000;
+            box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+        }
+
+        .tab-label:hover {
+            color: #fffb00;
+            text-shadow: 0 0 8px #ffaa00;
+            background: rgba(50, 35, 20, 0.9);
+        }
+
+        /* Active tab glows gold */
+        #tab1:checked ~ .tab-headers label[for="tab1"],
+        #tab2:checked ~ .tab-headers label[for="tab2"] {
+            color: #d4af37; 
+            background: rgba(40, 26, 13, 0.9); 
+            border: 3px solid #d4af37; 
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        }
+
+        /* Tab Content Toggling */
+        .tab-panel {
+            display: none;
+        }
+
+        #tab1:checked ~ #panel1,
+        #tab2:checked ~ #panel2 {
+            display: block;
+        }
+        /* ========================================================== */
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <input type="radio" id="tab1" name="steampunk-tabs" class="tab-switch" checked>
+        <input type="radio" id="tab2" name="steampunk-tabs" class="tab-switch">
+
+        <div class="tab-headers">
+            <label for="tab1" class="tab-label">Full Adder Construction</label>
+            <label for="tab2" class="tab-label">Math Explanation</label>
+        </div>
+
+        <div id="panel1" class="tab-panel">
+
+            <header style="text-align: center; margin-bottom: 60px;">
+            <h1>Building the Full Adder</h1>
+            <h3>The Foundational Piece of All Hardware logic</h3>
+        </header>
+
+            <section>
+                <h2>Your Task: Build a Full Adder</h2>
+                <div class="intro-text">
+                <p>The goal of this is to build a full adder -- a logic machine that takes in 3 inputs of either 0 or 1, adds them together, and then returns the output in binary. It is a good idea to read through the math explanation tab before continuing so you can understand how a full adder actually works.</p>
+
+                <p>You will be sending the 3 inputs to the circuit via moving some wires from power to ground to represent 1 and 0. There are 3 inputs, which we will call A, B and Cin (Carry-in). Read more about these in the math explanation.
+                    
+                <p> You will need 3 logic gate chips! Just like our NOT gate, there are other logic gates -- we will be using one XOR, one AND, and one OR gate chip. Read and verify that these part numbers are somewhere on your chips, and feel free to label them with tape! You do not need to worry about connecting resistors to these logic gates:</p>
+                <ul>
+                    <li>XOR chip: 74HC86 or 74LS86 </li>
+                    <li>AND chip: 74HC08 or 74LS08</li>
+                    <li>OR chip: 74HC32 or 74LS32</li>
+            </ul>
+
+            <p> In addition, to build the full adder you will need:</p>
+            <ul>
+                    <li>3 LEDs connected to your A, B, and Cin inputs respectively </li>
+                    <li>2 LEDs connected to your Carry-Out output and Sum output (make sure the carry-out and sum arduino pins are connected to the long end of the LEDs)</li>
+                    <li>Resistors (220 Ohms to 2K ohms)</li>
+                    <li>Wires!!!</li>
+
+            </ul>
+            <p>Be sure to place your LEDs such that from left to right, you can read the 3 input LEDs, then the carry-out LED, then the sum LED.</p>
+                </div>
+                <div class="rivets">&#9881; &#9881; &#9881;</div>
+            </section>
+            
+            <section>
+                <h2>How to Interpret Logic Gate Pins</h2>
+                <div class="intro-text">
+                    <img src="logicGatePin.png" alt="A logic gate diagram with labelled pin numbers, power and ground pins." class="circuit-image">
+            <a href="https://www.build-electronic-circuits.com/7400-series-integrated-circuits/74hc136-74ls136/" target="_blank" class="citation-link"> FIG. 1: Logic Gate Pin diagram</a>
+            
+                <p> Above is a sample XOR logic gate chip with the same amount pins as the XOR, AND, and OR gates we will use. You can find which way is the top of the chip by checking for a dot on the top left, like in the diagram, or a crescent shaped cutout in the center. The bottom also might have a circle in the center.</p>
+
+                <p> In each logic chip, there are actually 4 logic gates! Let's look at Pin 1 and Pin 2 on the diagram. These pins take in 2 inputs, run it through the logic gate, and output the answer in Pin 3. The same logic follows for the other 3 sets of pins.</p>
+
+                <p> There are also power and ground pins. We see ground connected on pin 7, and power connected on pin 14 (VCC). Feel free to connect these power and ground rows between logic gates, rather than dragging a wire all the way from the power and ground columns.</p>
+                </div>
+                <div class="rivets">&#9881; &#9881; &#9881;</div>
+            </section>
+
+            <section id="building-reminders">
+            <h2>Reminders for Building (Please Read)</h2>
+            <p>Keep these things in mind as you build your full adder.</p>
+            <ul>
+                    <li>Make sure that you <u>DON'T</u> have a resistor going straight from the arduino ground pin to your ground column. This will create some problems with the LEDs not being able to light up.</li>
+                    <br></br>
+                    <li>Make sure that you <u>DO</u> have resistors going between each of your logic gate outputs and the long legs of the LEDs to prevent frying.</li>
+                    <br></br>
+                    <li>Remember to connect each of your logic gates to power and ground!</li>
+                    <br></br>
+                    <li>Always complete the circuit by connecting the short end of your LEDs to ground.</li>
+                    <br></br>
+                    <li> If you are running tight on space, you can run wires to new breadboard rows and transfer whatever input you have into a new row -- we encourage/recommend this since you can more clearly see your wiring! There are no rules saying you have to use only the rows that your logic gate pins are in.</li>
+            </ul>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+        </div>
+
+        <section id="intro">
+            <h2>Arduino integration</h2>
+            <div class="intro-text">
+                <p>Now, we will integrate our computer and use it as a controller for our inputs and outputs!</p>
+                <p>You will be sending the 3 inputs to the circuit via python code. In order for these inputs to be sent to your physical breadboard, you will have to connect the logic gate pins to the numbered pins on the Arduino! The pins are as follows:</p>
+            <ul>
+                    <li>Input A: Pin 13</li>
+                    <li>Input B: Pin 12</li>
+                    <li>Input Cin (Carry-In): Pin 11</li>
+                    <li>Sum Output: Pin 10</li>
+                    <li>Carry-Out Output: Pin 9</li>
+            </ul>
+            </div>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+
+        <div id="panel2" class="tab-panel">
+            
+            <header style="text-align: center; margin-bottom: 60px;">
+            <h1>How Does the Binary Addition Work?</h1>
+            <h3>Read This Math Explanation to Help you Build your Full Adder!</h3>
+        </header>
+
+        <section id="intro">
+            <h2>Introduction</h2>
+            <div class="intro-text">
+                <p>Welcome, everybody! Before you physically construct your full adder, we must first understand the math that our hardware is able to compute.</p>
+                <p>A Full Adder, like the one we are making, has <strong>3 inputs</strong>:</p>
+                <ul>
+                    <li>Input <strong>A</strong> (coming from Pin 13 on the Arduino) </li>
+                    <li>Input <strong>B</strong> (coming from Pin 12 on the Arduino) </li>
+                    <li>The <strong>C<sub>in</sub></strong> (Carry-in) value. (coming from Pin 11 on the Arduino)</li>
+                </ul>
+                <p>For this practical demonstration, think of C<sub>in</sub> as just another digit, like A and B. However, in larger contraptions (like a ripple carry adder), this value is taken from the carry-out of the previous full adder.</p>
+            </div>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+        
+        <section id="circuit-diagrams">
+            <h2>Circuit Diagrams!</h2>
+            <p>Take a look at the online circuitverse representation of exactly what we will be building! Circuitverse is a platform used to represent the bit manipulation that is happening in hardware on our computer screen. </p>
+            
+            <p>Here is a full adder circuit! Notice the 2 XOR gates at the top, the two crescent-shaped AND gates, and the OR gate on the right. </p>
+            <img src="circuitverseFullAdder.png" alt="A Full Adder logic circuit diagram from CircuitVerse, built with 3 inputs, XOR, AND, and OR gates, producing a final Sum and Carry-out of '1'." class="circuit-image">
+            <a href="https://circuitverse.org/simulator/edit/full-adder-3f51ccb5-e357-43c3-a743-99b5c39655a2" target="_blank" class="citation-link">FIG. 2: Full Adder via CircuitVerse</a>
+            
+            <p>Here is the ripple carry adder -- the adder goes from right to left, and the carry out is transferred from the output of one full adder to the input of another. You can build up a ripple carry adder to add larger and larger numbers! </p>
+            <img src="circuitverseRippleCarryAdder.png" alt="A Ripple Carry Adder logic circuit diagram from CircuitVerse, built by attaching multiple full adders together." class="circuit-image">
+            <a href="https://www.cs.hmc.edu/twiki/bin/view/CS5/WebHome" target="_blank" class="citation-link">FIG. 3: Ripple Carry Adder sourced via CS5</a>
+            
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+        <section id="example-setup">
+            <h2>Our example</h2>
+            <p>To demonstrate, we shall observe what occurs when we input the decimal (or our "normal" number system) digits <strong>110</strong> into our Full Adder.</p>
+            <ul>
+                <li><strong>A = 1</strong> (Top Input)</li>
+                <li><strong>B = 1</strong> (Middle Input)</li>
+                <li><strong>C<sub>in</sub> = 0</strong> (Bottom Input)</li>
+            </ul>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="xor-gates">
+            <h2>Using the XOR gates to Calculate the "Sum" Component of the Binary Answer</h2>
+            <p>Our device first uses <strong>two XOR (Exclusive OR) gates</strong> to compute the "Sum" part of the output.</p>
+            <span class="logic-definition">XOR Gates: If the inputs are the same number (e.g., 0,0 or 1,1), the output is 0. If the inputs are different numbers (e.g., 0,1 or 1,0), the output is 1.</span>
+
+            <p><strong>Step A:</strong> The first XOR gate accepts the initial decimal digits, A (1) and B (1). According to XOR logic, since they are the same number, it outputs:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">1 +<sub>xor</sub> 1 = 0</p>
+            
+            <p><strong>Step B:</strong> The second XOR gate accepts this 0 output from Step A and our third input, C<sub>in</sub> (0). As both inputs are 0 (same number),  XOR logic produces a final Sum of:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">0 +<sub>xor</sub> 0 = 0</p>
+            
+            <p style="margin-top: 20px;">And so, we determine that the <em>bit on the right-hand side (Sum)</em> of our final answer is 0.</p>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="carry-out">
+            <h2>Using AND and OR Gates to Calculate the "Carry-Out" Component</h2>
+            <p>Next, the adder activates <strong>two AND gates</strong> to process the "Carry-out" part of the output.</p>
+            <span class="logic-definition">AND Gate Logic: This gate produces a 1 output ONLY when BOTH inputs are 1. Any other scenario results in 0.</span>
+
+            <p>For our example, the first AND gate is fed inputs A (1) and B (1). Since they are both 1, the gate produces an output of <strong>1</strong>.</p>
+            <p>The second AND gate is fed C<sub>in</sub> (0) and the output of the FIRST XOR gate (which was 0). Since they are both 0, the output is <strong>0</strong>.</p>
+            
+            <p style="margin-top: 30px;">Lastly, the full adder employs a <strong>single OR gate</strong> for the final Carry-out summation.</p>
+            <span class="logic-definition">OR Gate Logic: This gate produces a 1 if any or all inputs are 1. A 0 is produced only if both inputs are 0.</span>
+
+            <p>This single OR gate accepts the results from our two AND gates: <strong>1</strong> and <strong>0</strong>. Since there is a 1 present, the OR law gives us a final Carry-out output of:</p>
+            <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.2em;">1 +<sub>or</sub> 0 = 1</p>
+            
+            <p style="margin-top: 20px;">And so, we determine that the <em>high-order bit (Carry-out)</em> of our final answer is 1.</p>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="conclusion">
+            <h2>Conclusion of the Proof</h2>
+            <div class="intro-text">
+                <p>We input A=1, B=1, and Cin=0. Our initial mathematical hypothesis was 1+1+0=2 (or '10' in binary).</p>
+                <p>Reading our outputs in order: Carry-out first, then Sum, we see that our mechanized adder produced the values:</p>
+                <p style="text-align: center; font-weight: bold; color: #d4af37; font-size: 1.5em; text-shadow: 2px 2px #000;">1 0</p>
+                <p>Indeed! 1+1+0 = 10<sub>binary</sub>. The full adder logic seems complicated -- and it is! Congrats on making it through. These logic gates make up the most fundamental parts of computers!</p>
+            </div>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+
+        <section id="truth-table">
+            <h2>Full Adder Truth Table</h2>
+            <p>Here is the full adder truth table, detailing all possible input combinations and their required outputs. We should always verify our circuits against this table!</p>
+            <table class="truth-table">
+                <thead>
+                    <tr>
+                        <th colspan="3">Inputs</th>
+                        <th colspan="2">Outputs</th>
+                    </tr>
+                    <tr>
+                        <th>A</th>
+                        <th>B</th>
+                        <th>C<sub>in</sub></th>
+                        <th>C<sub>out</sub></th>
+                        <th>Sum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+                    <tr><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>0</td><td>1</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>0</td><td>0</td><td>0</td><td>1</td></tr>
+                    <tr><td>1</td><td>0</td><td>1</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+                    <tr><td>1</td><td>1</td><td>1</td><td>1</td><td>1</td></tr>
+                </tbody>
+            </table>
+            <div class="rivets">&#9881; &#9881; &#9881;</div>
+        </section>
+    </div>
+
+    <div id="hmc-link" onclick="window.location.href='https://www.youtube.com/watch?v=QDia3e12czc'" title="Click Here ( ͡° ͜ʖ ͡°)">
+    <span class="gear-emoji">⚙️</span>
+    </div>
+
+</body>
+</html>
